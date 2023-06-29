@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Perfect Pizza</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="code.js" async defer></script>
+        
+        <!-- <link rel="stylesheet" href="style.css"> -->
+
+        <!-- Font Awesome -->
+        <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        rel="stylesheet"
+        />
+        <!-- Google Fonts -->
+        <link
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        rel="stylesheet"
+        />
+        <!-- MDB -->
+        <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
+        rel="stylesheet"
+        />
+    </head>
+    <body>
+        <section  x-data="{total: 0.00, scount: 0, mcount: 0, lcount: 0, cart_count: 0, message: '', amount: 0, show: false}">
+            <!-- Navbar -->
+            <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
+                <!-- Container wrapper -->
+                <div class="container">
+                <!-- Toggle button -->
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-mdb-toggle="collapse"
+                    data-mdb-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <i class="fas fa-bars"></i>
+                </button>
+            
+                <!-- Collapsible wrapper -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Navbar brand -->
+                    <a class="navbar-brand mt-2 mt-lg-0" href="/index.html"> PERFECT PIZZA
+                    </a>
+                    
+                </div>
+                <!-- Collapsible wrapper -->
+            
+                <!-- Right elements -->
+                <div class="d-flex align-items-center">
+                    <!-- Icon -->
+                    <a class="link-secondary me-3" href="#">
+                    <i class="fas fa-shopping-cart"></i>
+                    
+                    <span class="badge rounded-pill badge-notification bg-danger" x-text="cart_count= scount + mcount + lcount" ></span>
+                    </a>
+
+                </div>
+                <!-- Right elements -->
+                </div>
+                <!-- Container wrapper -->
+            </nav><br><br><br>
+            <!-- Navbar -->
+
+            <main class="container">
+
+                <div class="text-center" >
+                    <h3 class="fas fa-cart-shopping">Shopping Cart</h3> <h3 class="fas fa-cart-shopping"> </h3>
+                    <div>
+                        <span>Small Pizza </span><span class="badge rounded-pill badge-danger" x-text="scount"></span><br>
+                        <button class="badge badge-dark" @click="(check_message='');(total+=13.00);(scount++)">+</button>
+                        <button class="badge badge-dark" @click="if(scount >0 ){total-=13.00;scount--;}">-</button>
+                        <span>R13.00</span>
+                    </div><br>
+
+                    <div>
+                        <span>Medium</span><span class="badge rounded-pill badge-danger" x-text="mcount"></span><br>
+                        <button class="badge badge-dark"  @click="(check_message='');(total+=18.99); (mcount++) ">+</button>
+                        <button class="badge badge-dark"  @click="if(mcount >0){total-=18.99;mcount--;}">-</button>
+                        <span>R18.99</span>
+                    </div><br>
+
+                    <div>
+                        <span>Large</span><span class="badge rounded-pill badge-danger" x-text="lcount"></span><br>
+                        <button class="badge badge-dark"  @click="(check_message=''),(total+=24.99),(lcount++)">+</button>
+                        <button class="badge badge-dark"  @click="if(lcount >0){total-=24.99;lcount--;}">-</button>
+                        <span>R24.99</span>
+                    </div><br>
+                    
+                    
+                    <span>Total Cost: R</span><span x-text="total.toFixed(2)"></span><br>
+
+                    <div >
+
+                        <div x-data="{ show: false}">
+
+                          
+                                    <p class="alert-danger " x-text="check_message"></p>
+                                    <h3 x-text="message"></h3> 
+                            
+                        </div>
+
+                            
+
+                            <button x-show="total > 0" class="btn btn-warning btn-lg" @click="if(total > 0){show=!show; check_message=''} else{check_message='Your Cart is empty...Add some pizzas'}">Checkout</button>
+
+                            <div class="" x-show="show">
+
+                                <form>
+                                    <label for="amount">Payment Amount</label>
+                                    <input id="amount" type="number" placeholder="Enter amount" x-model="amount" />
+
+                                    <button class="btn btn-success" @click="if(amount >= total){ message='Enjoy your pizza'; total=0; lcount=0; scount=0; mcount=0, amount=0, show=false , setTimeout(function(){ message=''; }, 3000);} else{message='Sorry - that is not enough money!'; setTimeout(function(){ message=''; }, 3000); } " type="button">Pay</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                        
+                </div>
+                <br>
+                
+
+                <section class="row justify-content-center">
+                    <section class="col-md-4">
+
+                        <div class="card">
+                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                              <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lVQ4FbAALm2hycBE8BVKDQHaEo%26pid%3DApi&f=1&ipt=50c14cc69546d9650bbee88a84371bc9d64ab588e4b54917949363dae560ca11&ipo=images" class="img-fluid"/>
+                              <a href="#!">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                              </a>
+                            </div>
+                            <div class="card-body">
+                              <h2 class="card-title">Small Pizza</h2>
+                              <h3>R13.00</h3>
+                              <p class="card-text">Small pizza with 2 toppings 
+                                1 meat topping. 
+                                3 or less other toppings.</p>
+                                <br>
+                                <div class="d-grid gap-2">
+                                    <a href="#!" class="btn btn-primary" @click="(total+=13.00) (scount++)">Buy</a>
+                                </div>
+                              
+                            </div>
+                        </div>
+
+                    </section>
+                    <section class="col-md-4">
+
+                        <div class="card">
+                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                              <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Hk_8DGzWZud9hZZ35WTgnQHaEo%26pid%3DApi&f=1&ipt=6b47e13292ac551e6b67d4f49fd56f2fedca5e249568d4ba3dca03ae472049ae&ipo=images" class="img-fluid"/>
+                              <a href="#!">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                              </a>
+                            </div>
+                            <div class="card-body">
+                              <h2 class="card-title">Medium Pizza</h2>
+                              <h3>R18.99</h3>
+                              <p class="card-text">Medium margerith pizza with 3 topping max 2 or less meat topping 3 or less other toppings</p>
+                              
+                              <div class="d-grid gap-2">
+                                <a class="btn btn-primary" @click="(total+=18.99) (mcount++)">Buy</a>
+                            </div>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section class="col-md-4">
+                        <div class="card">
+                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                                <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.ildCrKedl5wZSDvDouexMQHaEo%26pid%3DApi&f=1&ipt=4577cab5dc2b5084d793ca02ab1f450944251f0ee0ddca663b395ea8994e571d&ipo=images" class="img-fluid"/>
+                                <a href="#!">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h2 class="card-title">Large Pizza</h2>
+                                <h3>R24.99</h3>
+                                <p class="card-text">
+                                    Large margeritha pizza with 3 toppings max
+                                    3 meat topping max
+                                    3 or lessother toppings</p>
+                                
+                                <div class="d-grid gap-2">
+                                    <a class="btn btn-primary" @click="(total+=24.99) (lcount++)">Buy</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                </section>
+
+
+            </main>
+
+
+        </section><br>
+
+        <div class="container" x-data="pizzaCartWithAPIWidget" >
+            
+            <span x-text="pizzas[0].type"></span>
+            <table  class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Flavour</th>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                   <template x-for="p in ppp">
+                        <tr>
+                            <td x-text="p.flavour"></td>
+                            <td x-text="p.type"></td>
+                            <td x-text="p.size"></td>
+                            <td x-text="p.price"></td>
+                            <td><button>Buy</button></td>
+                        </tr>
+                        
+                    </template> 
+                </tbody>
+            </table>
+            
+
+        </div>
+        
+
+        <footer class="bg-dark text-center text-white">
+            <!-- Grid container -->
+            <div class="container p-4 pb-0">
+              <!-- Section: Social media -->
+              <section class="mb-4">
+                <!-- Facebook -->
+
+                <section class="row">
+
+                    <div class="col-md-6">
+                        <p><b>contact us at: (012)-541-1000</b></p>
+                        <p>twitter: @PerfectPizza</p>
+                        <p>Instagam: @PerfectPizza</p>
+                        <p>facebook: PerfectPizza</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>Pizza Plaza</p>
+                        <p>Dough Road</p>
+                        <p>Base Town</p>
+                    </div>
+                    <hr>
+                </section>
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                  ><i class="fab fa-facebook-f"></i
+                ></a>
+          
+                <!-- Twitter -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                  ><i class="fab fa-twitter"></i
+                ></a>
+          
+                <!-- Google -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                  ><i class="fab fa-google"></i
+                ></a>
+          
+                <!-- Instagram -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                  ><i class="fab fa-instagram"></i
+                ></a>
+          
+                <!-- Linkedin -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                  ><i class="fab fa-linkedin-in"></i
+                ></a>
+          
+                <!-- Github -->
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                  ><i class="fab fa-github"></i
+                ></a>
+              </section>
+              <!-- Section: Social media -->
+            </div>
+            <!-- Grid container -->
+          
+            <!-- Copyright -->
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+              © 2020 Copyright:
+              <a class="text-white">Perfect Pizza</a>
+            </div>
+            <!-- Copyright -->
+          </footer>
+        
+        
+        <!-- MDB -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+        <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script> -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </body>
+</html>
