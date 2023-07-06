@@ -16,7 +16,7 @@ document.addEventListener('alpine:init', () => {
             userActiveCart: '',
             pizza: '',
             username: 'tswelopele',
-            url: `https://pizza-api.projectcodex.net/`,
+            url: `this.base_url + `,
 
 
             // when initializing the code
@@ -158,10 +158,11 @@ document.addEventListener('alpine:init', () => {
         paymentMessage: '',
         payNow: false,
         paymentAmount: 0,
+        base_url: 'https://pizza-api.projectcodex.net/',
   
         init() {
           axios
-            .get('https://pizza-api.projectcodex.net/api/pizzas')
+            .get(this.base_url+'api/pizzas')
             .then((result) => {
               this.pizzas = result.data.pizzas
               console.log(this.pizzas)
@@ -179,23 +180,23 @@ document.addEventListener('alpine:init', () => {
   
         featuredPizzas() {
           return axios
-            .get('https://pizza-api.projectcodex.net/api/pizzas/featured')
+            .get(this.base_url + 'api/pizzas/featured')
         },
         
         postfeaturedPizzas() {
           return axios
-            .post('https://pizza-api.projectcodex.net/api/pizzas/featured')
+            .post(this.base_url + 'api/pizzas/featured')
         },
   
         createCart() {
             this.message = this.username + "added a pizza"
           return axios
-            .get('https://pizza-api.projectcodex.net/api/pizza-cart/create?username=' + this.username)
+            .get(this.base_url + 'api/pizza-cart/create?username=' + this.username)
         },
   
         showCart() {
             
-          const url = `https://pizza-api.projectcodex.net/api/pizza-cart/${this.cart_id}/get`;
+          const url = this.base_url + `api/pizza-cart/${this.cart_id}/get`;
   
           axios
             .get(url)
@@ -211,7 +212,7 @@ document.addEventListener('alpine:init', () => {
         add(pizza) {
   
           axios
-            .post('https://pizza-api.projectcodex.net/api/pizza-cart/add', {
+            .post(this.base_url + 'api/pizza-cart/add', {
                 cart_code: this.cart_id,
                 pizza_id: pizza.id
               })
@@ -235,7 +236,7 @@ document.addEventListener('alpine:init', () => {
         remove(pizza) {
 
           axios
-            .post('https://pizza-api.projectcodex.net/api/pizza-cart/remove', {
+            .post(this.base_url + 'api/pizza-cart/remove', {
                 cart_code: this.cart_id,
                 pizza_id: pizza.id
               })
@@ -250,7 +251,7 @@ document.addEventListener('alpine:init', () => {
         pay(pizza) {
 
           axios
-            .post('https://pizza-api.projectcodex.net/api/pizza-cart/pay', {
+            .post(this.base_url + 'api/pizza-cart/pay', {
                 cart_code: this.cart_id,
               })
             .then(() => {
