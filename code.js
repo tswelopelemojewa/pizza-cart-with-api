@@ -260,6 +260,9 @@ document.addEventListener('alpine:init', () => {
                 this.message = this.username + " , paid for the pizza(s)!";
                 setTimeout(() => {
                   this.money = 0;
+                  this.scount = 0;
+                  this.mcount = 0;
+                  this.lcount = 0;
                   this.cart_count=0;
                   this.paymentMessage = '';
                 }, 3000);
