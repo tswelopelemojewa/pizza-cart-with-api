@@ -1,0 +1,39 @@
+body{
+    background-image: url("images/bg.jpg"); ;
+    background-size: cover;
+    /* background-repeat: no-repeat; */
+    background-attachment: fixed;
+    
+}
+
+.main{
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.header-div{
+    text-align: center;
+    margin: 10px;
+    padding: 15px;
+    /* font-size: 35px; */
+    font-family: cursive, 'Brush Script MT';
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+}
+
+
+/* styling each section */
+.sec-1{
+    background-color: #FFFFFF;
+    background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(120,0,0,0.3))
+}
+
+.sec-2{
+    background-color: #FFFFFF;
+    background-image: linear-gradient(to right, rgba(120,0,0,0.3), rgba(190,0,0,0.7))
+}
+
+.sec-3{
+    background-color: #FFFFFF;
+    background-image: linear-gradient(to right, rgba(190,0,0,0.7), rgba(255,0,0,1))
+}
+/* end of section styling */

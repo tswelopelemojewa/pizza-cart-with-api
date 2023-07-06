@@ -1,39 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Perfect Pizza</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="code.js" async defer></script>
-        
-        <!-- <link rel="stylesheet" href="style.css"> -->
 
-        <!-- Font Awesome -->
-        <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        rel="stylesheet"
-        />
-        <!-- Google Fonts -->
-        <link
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        rel="stylesheet"
-        />
-        <!-- MDB -->
-        <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
-        rel="stylesheet"
-        />
-    </head>
-    <body>
-        <section  x-data="{total: 0.00, scount: 0, mcount: 0, lcount: 0, cart_count: 0, message: '', amount: 0, show: false}">
-            <!-- Navbar -->
-            <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
-                <!-- Container wrapper -->
-                <div class="container">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Perfect Pizza</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="code.js" async defer></script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet" />
+</head>
+
+<body x-data="pizzaCartWithAPIWidget">
+    <section class="main">
+        <!-- Navbar -->
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
+            <!-- Container wrapper -->
+            <div class="container">
                 <!-- Toggle button -->
-                <button
+                <!-- <button
                     class="navbar-toggler"
                     type="button"
                     data-mdb-toggle="collapse"
@@ -43,174 +36,255 @@
                     aria-label="Toggle navigation"
                 >
                     <i class="fas fa-bars"></i>
-                </button>
-            
+                </button> -->
+
                 <!-- Collapsible wrapper -->
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="" id="navbarSupportedContent">
                     <!-- Navbar brand -->
                     <a class="navbar-brand mt-2 mt-lg-0" href="/index.html"> PERFECT PIZZA
                     </a>
-                    
+
                 </div>
                 <!-- Collapsible wrapper -->
-            
+
                 <!-- Right elements -->
                 <div class="d-flex align-items-center">
                     <!-- Icon -->
                     <a class="link-secondary me-3" href="#">
-                    <i class="fas fa-shopping-cart"></i>
-                    
-                    <span class="badge rounded-pill badge-notification bg-danger" x-text="cart_count= scount + mcount + lcount" ></span>
+                        <i class="fas fa-shopping-cart" @click="(open=!open)"></i>
+
+                        <span class="badge rounded-pill badge-notification bg-danger"
+                            x-text="cart_count"></span>
                     </a>
 
                 </div>
                 <!-- Right elements -->
-                </div>
-                <!-- Container wrapper -->
-            </nav><br><br><br>
-            <!-- Navbar -->
+            </div>
+            <!-- Container wrapper -->
+        </nav><br><br><br>
+        <!-- Navbar -->
 
-            <main class="container">
+        <main class="container text-center">
 
-                <div class="text-center" >
-                    <h3 class="fas fa-cart-shopping">Shopping Cart</h3> <h3 class="fas fa-cart-shopping"> </h3>
-                    <div>
-                        <span>Small Pizza </span><span class="badge rounded-pill badge-danger" x-text="scount"></span><br>
-                        <button class="badge badge-dark" @click="(check_message='');(total+=13.00);(scount++)">+</button>
-                        <button class="badge badge-dark" @click="if(scount >0 ){total-=13.00;scount--;}">-</button>
-                        <span>R13.00</span>
-                    </div><br>
-
-                    <div>
-                        <span>Medium</span><span class="badge rounded-pill badge-danger" x-text="mcount"></span><br>
-                        <button class="badge badge-dark"  @click="(check_message='');(total+=18.99); (mcount++) ">+</button>
-                        <button class="badge badge-dark"  @click="if(mcount >0){total-=18.99;mcount--;}">-</button>
-                        <span>R18.99</span>
-                    </div><br>
-
-                    <div>
-                        <span>Large</span><span class="badge rounded-pill badge-danger" x-text="lcount"></span><br>
-                        <button class="badge badge-dark"  @click="(check_message=''),(total+=24.99),(lcount++)">+</button>
-                        <button class="badge badge-dark"  @click="if(lcount >0){total-=24.99;lcount--;}">-</button>
-                        <span>R24.99</span>
-                    </div><br>
+            <div class="header-div">
+                <h1>PERFECT PIZZA</h1>
+                <hr />
+            </div>
+            <div class="text-center">
+                <template x-if="paymentMessage=='Enjoy your pizza'">
+                    <div class="alert alert-success">
+                        <h6 x-text="paymentMessage"></h6>
+                        <span>Here is you change: </span><span x-text="change.toFixed(2)"></span>
+                    </div>
                     
+                </template>
+
+                <template x-if="paymentMessage== 'Sorry, That is not enough money!'">
+                    <h6 class="alert alert-danger" x-text="paymentMessage"></h6>
+                </template>
+            </div>
+
+        </main>
+
+        <div class="container text-center">
+            <div x-show="open && money>0" class="header-div">
+                <h3 class="fas fa-cart-shopping ">Shopping Cart</h3>
+                <h3 class="fas fa-cart-shopping"></h3>
+
+                <div>
+                    <span>Cart ID: </span>
+                    <span x-text="cart_id"></span>
+    
+                    <form>
+                        <label>Username </label>
+                        <input type="text" class="form-control-sm" x-model="username" placeholder="Enter Username..." />
+                    </form>
+                </div><br>
+
+                <table class="table">
+                    <thead class="header-div">
+                        <tr>
+                            <th>Flavour</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+    
+                    </thead>
+                    <tbody class="header-div">
+                         <tr x-show="scount > 0">
+                            <td>Creamy Tikka Veg</td>
+                            <td >pepperoni Pizza</td>
+                            <td >small</td>
+                            <td >35.00</td>
+                            <td x-text="scount"></td>
+                            <td><button class="badge badge-info"  @click="(cart_count++), (scount++), (total+=35)">+</button>
+                                <button class="badge badge-danger"  x-on:click="if(scount > 0){(cart_count--), (scount--), (total-=35)}">-</button>
+                            </td>
+                                
+                        </tr>
+                        <tr x-show="mcount > 0">
+                            <td>margeritha pizza</td>
+                            <td >Meaty</td>
+                            <td >Medium</td>
+                            <td >55.00</td>
+                            <td x-text="mcount"></td>
+                            <td><button class="badge badge-info"  @click="(cart_count++), (mcount++), (total+=55)">+</button>
+                                <button class="badge badge-danger"  x-on:click="if(mcount > 0){(cart_count--), (mcount--), (total-=55)}">-</button>
+                            </td>
+                                
+                        </tr>
+                        <tr x-show="lcount > 0">
+                            <td>cheese pizza</td>
+                            <td >Cheese</td>
+                            <td >Large</td>
+                            <td >95.00</td>
+                            <td x-text="lcount"></td>
+                            <td><button class="badge badge-info"  @click="(cart_count++), (lcount++), (total+=95)">+</button>
+                                <button class="badge badge-danger"  x-on:click="if(lcount > 0){(cart_count--), (lcount--), (total-=95)}">-</button>
+                            </td>
+                                
+                        </tr>
+
+                        <template x-for="pizza in cart.pizzas">
+                            <tr>
+                                <td x-text="pizza.flavour"></td>
+                                <td x-text="pizza.type"></td>
+                                <td x-text="pizza.size"></td>
+                                <td x-text="pizza.price"></td>
+                                <td x-text="pizza.qty"></td>
+                                <td><button class="badge badge-info" @click="add(pizza)">+</button>
+                                    <button class="badge badge-danger" @click="remove(pizza)">-</button></td>
+                            </tr>
+                        </template>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Total</td>
+                            <td><span x-text="money = total + cart.total"></span></td>
+                            <td><span x-text="cart_count"></span> pizza<span x-show="cart_count > 1">s</span></td>
+                            <td>
+                                <button class="btn btn-warning" x-show="!payNow" x-on:click="payNow=true">Checkout</button>
+                            </td>
+                        </tr>
+                        <tr x-show="payNow">
+                            <td colspan="6">
+                                <div class="">
+                                    <div>
+                                        <label >Enter Amount</label>
+                                        <input class="form-control" type="number" placeholder="Enter Amount" x-model="paymentAmount" /><br>
+                                        <button  x-on:click="pay" class="btn btn-success btn-block">Pay</button>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
                     
-                    <span>Total Cost: R</span><span x-text="total.toFixed(2)"></span><br>
+                </table>
+            </div>
 
-                    <div >
+            
 
-                        <div x-data="{ show: false}">
+            <section class="row text-center">
+                <section class="col-md-4">
 
-                          
-                                    <p class="alert-danger " x-text="check_message"></p>
-                                    <h3 x-text="message"></h3> 
-                            
+                    <div class="card">
+                        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                            <img src="images/th-802102854" class="img-fluid" />
+                            <a href="#!">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                            </a>
                         </div>
+                        <div class="card-body sec-1">
+                            <h2 class="card-title">Small Pizza</h2>
+                            <h3>R35.00</h3>
+                            <p class="card-text">Small pizza with 2 toppings
+                                1 meat topping.
+                                3 or less other toppings.</p>
+                            <br>
+                            <div class="d-grid gap-2">
+                                <a href="#!" class="btn btn-primary" @click="(cart_count++),(scount++), (total+=35)"
+                                    x-show="scount < 1">Add to cart</a>
+                                <div x-show="scount > 0">
+                                    <a href="#!" class="btn btn-success" @click="open=!open" x-show="scount > 0">View
+                                        Cart</a>
+                                    <a href="#!" class="btn btn-warning" @click="(total-=35),(scount--),(cart_count--) "
+                                        x-show="scount > 0">Cancel Order</a>
+                                </div>
+                            </div>
 
-                            
+                        </div>
+                    </div>
 
-                            <button x-show="total > 0" class="btn btn-warning btn-lg" @click="if(total > 0){show=!show; check_message=''} else{check_message='Your Cart is empty...Add some pizzas'}">Checkout</button>
+                </section>
+                <section class="col-md-4">
 
-                            <div class="" x-show="show">
+                    <div class="card">
+                        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                            <img src="images/th-1442208634" class="img-fluid" />
+                            <a href="#!">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                            </a>
+                        </div>
+                        <div class="card-body sec-2">
+                            <h2 class="card-title">Medium Pizza</h2>
+                            <h3>R55.00</h3>
+                            <p class="card-text">Medium margeritha pizza with 3 topping max 2 or less meat topping 3 or
+                                less other toppings</p>
 
-                                <form>
-                                    <label for="amount">Payment Amount</label>
-                                    <input id="amount" type="number" placeholder="Enter amount" x-model="amount" />
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary" @click="(cart_count++),(total+=55) (mcount++)" x-show="mcount < 1">Add to
+                                    cart</a>
 
-                                    <button class="btn btn-success" @click="if(amount >= total){ message='Enjoy your pizza'; total=0; lcount=0; scount=0; mcount=0, amount=0, show=false , setTimeout(function(){ message=''; }, 3000);} else{message='Sorry - that is not enough money!'; setTimeout(function(){ message=''; }, 3000); } " type="button">Pay</button>
-                                </form>
+                                <div x-show="mcount > 0">
+                                    <a href="#!" class="btn btn-success" @click="open=!open" x-show="mcount > 0">View
+                                        Cart</a>
+                                    <a href="#!" class="btn btn-warning" @click="(total.toFixed(2)-=55),(mcount--), (cart_count--)"
+                                        x-show="mcount > 0">Cancel Order</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                        
-                </div>
-                <br>
-                
 
-                <section class="row justify-content-center">
-                    <section class="col-md-4">
-
-                        <div class="card">
-                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                              <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lVQ4FbAALm2hycBE8BVKDQHaEo%26pid%3DApi&f=1&ipt=50c14cc69546d9650bbee88a84371bc9d64ab588e4b54917949363dae560ca11&ipo=images" class="img-fluid"/>
-                              <a href="#!">
-                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                              </a>
-                            </div>
-                            <div class="card-body">
-                              <h2 class="card-title">Small Pizza</h2>
-                              <h3>R13.00</h3>
-                              <p class="card-text">Small pizza with 2 toppings 
-                                1 meat topping. 
-                                3 or less other toppings.</p>
-                                <br>
-                                <div class="d-grid gap-2">
-                                    <a href="#!" class="btn btn-primary" @click="(total+=13.00) (scount++)">Buy</a>
-                                </div>
-                              
-                            </div>
-                        </div>
-
-                    </section>
-                    <section class="col-md-4">
-
-                        <div class="card">
-                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                              <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.Hk_8DGzWZud9hZZ35WTgnQHaEo%26pid%3DApi&f=1&ipt=6b47e13292ac551e6b67d4f49fd56f2fedca5e249568d4ba3dca03ae472049ae&ipo=images" class="img-fluid"/>
-                              <a href="#!">
-                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                              </a>
-                            </div>
-                            <div class="card-body">
-                              <h2 class="card-title">Medium Pizza</h2>
-                              <h3>R18.99</h3>
-                              <p class="card-text">Medium margerith pizza with 3 topping max 2 or less meat topping 3 or less other toppings</p>
-                              
-                              <div class="d-grid gap-2">
-                                <a class="btn btn-primary" @click="(total+=18.99) (mcount++)">Buy</a>
-                            </div>
-                            </div>
-                        </div>
-
-                    </section>
-
-                    <section class="col-md-4">
-                        <div class="card">
-                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.ildCrKedl5wZSDvDouexMQHaEo%26pid%3DApi&f=1&ipt=4577cab5dc2b5084d793ca02ab1f450944251f0ee0ddca663b395ea8994e571d&ipo=images" class="img-fluid"/>
-                                <a href="#!">
-                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h2 class="card-title">Large Pizza</h2>
-                                <h3>R24.99</h3>
-                                <p class="card-text">
-                                    Large margeritha pizza with 3 toppings max
-                                    3 meat topping max
-                                    3 or lessother toppings</p>
-                                
-                                <div class="d-grid gap-2">
-                                    <a class="btn btn-primary" @click="(total+=24.99) (lcount++)">Buy</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </section>
                 </section>
 
+                <section class="col-md-4">
+                    <div class="card">
+                        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                            <img src="images/th-2407141163" class="img-fluid" />
+                            <a href="#!">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                            </a>
+                        </div>
+                        <div class="card-body sec-3">
+                            <h2 class="card-title">Large Pizza</h2>
+                            <h3>R95.00</h3>
+                            <p class="card-text">
+                                Large cheese pizza with 3 toppings max
+                                3 meat topping max
+                                3 or less other toppings</p><br>
 
-            </main>
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary" @click="(total+=95),(lcount++),(cart_count++)" x-show="lcount < 1">Add to
+                                    cart</a>
+                                <div x-show="lcount > 0">
+                                    <a href="#!" class="btn btn-success" @click="open=!open" x-show="lcount > 0">View
+                                        Cart</a>
+                                    <a href="#!" class="btn btn-warning" @click="(total+=95),(lcount--),(cart_count--)"
+                                        x-show="lcount > 0">Cancel Order</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                </section>
+            </section><br>
 
-        </section><br>
-
-        <div class="container" x-data="pizzaCartWithAPIWidget" >
-            
-            <span x-text="pizzas[0].type"></span>
-            <table  class="table table-hover">
-                <thead>
+            <table class="table">
+                <thead class="header-div">
                     <tr>
                         <th>Flavour</th>
                         <th>Type</th>
@@ -218,95 +292,97 @@
                         <th>Price</th>
                         <th>Action</th>
                     </tr>
-                    
+
                 </thead>
-                <tbody>
-                   <template x-for="p in ppp">
+                <tbody class="header-div">
+                    <template x-for="pizza in pizzas">
                         <tr>
-                            <td x-text="p.flavour"></td>
-                            <td x-text="p.type"></td>
-                            <td x-text="p.size"></td>
-                            <td x-text="p.price"></td>
-                            <td><button>Buy</button></td>
+                            <td x-text="pizza.flavour"></td>
+                            <td x-text="pizza.type"></td>
+                            <td x-text="pizza.size"></td>
+                            <td x-text="pizza.price"></td>
+                            <td>
+                                <div class="">
+                                    <a class="btn btn-primary" @click="(add(pizza)), (cart.price+=pizza.price)">Add to
+                                        cart</a>    
+                                </div>
+                            </td>
                         </tr>
-                        
-                    </template> 
+
+                    </template>
                 </tbody>
             </table>
-            
+
 
         </div>
-        
+
+
 
         <footer class="bg-dark text-center text-white">
             <!-- Grid container -->
             <div class="container p-4 pb-0">
-              <!-- Section: Social media -->
-              <section class="mb-4">
-                <!-- Facebook -->
+                <!-- Section: Social media -->
+                <section class="mb-4">
+                    <!-- Facebook -->
 
-                <section class="row">
+                    <section class="row">
 
-                    <div class="col-md-6">
-                        <p><b>contact us at: (012)-541-1000</b></p>
-                        <p>twitter: @PerfectPizza</p>
-                        <p>Instagam: @PerfectPizza</p>
-                        <p>facebook: PerfectPizza</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p>Pizza Plaza</p>
-                        <p>Dough Road</p>
-                        <p>Base Town</p>
-                    </div>
-                    <hr>
+                        <div class="col-md-6">
+                            <p><b>contact us at: (012)-541-1000</b></p>
+                            <p>twitter: @PerfectPizza</p>
+                            <p>Instagam: @PerfectPizza</p>
+                            <p>facebook: PerfectPizza</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Pizza Plaza</p>
+                            <p>Dough Road</p>
+                            <p>Base Town</p>
+                        </div>
+                        <hr>
+                    </section>
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                            class="fab fa-facebook-f"></i></a>
+
+                    <!-- Twitter -->
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                            class="fab fa-twitter"></i></a>
+
+                    <!-- Google -->
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                            class="fab fa-google"></i></a>
+
+                    <!-- Instagram -->
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                            class="fab fa-instagram"></i></a>
+
+                    <!-- Linkedin -->
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                            class="fab fa-linkedin-in"></i></a>
+
+                    <!-- Github -->
+                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+                            class="fab fa-github"></i></a>
                 </section>
-                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
-                  ><i class="fab fa-facebook-f"></i
-                ></a>
-          
-                <!-- Twitter -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
-                  ><i class="fab fa-twitter"></i
-                ></a>
-          
-                <!-- Google -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
-                  ><i class="fab fa-google"></i
-                ></a>
-          
-                <!-- Instagram -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
-                  ><i class="fab fa-instagram"></i
-                ></a>
-          
-                <!-- Linkedin -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
-                  ><i class="fab fa-linkedin-in"></i
-                ></a>
-          
-                <!-- Github -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
-                  ><i class="fab fa-github"></i
-                ></a>
-              </section>
-              <!-- Section: Social media -->
+                <!-- Section: Social media -->
             </div>
             <!-- Grid container -->
-          
+
             <!-- Copyright -->
             <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-              © 2020 Copyright:
-              <a class="text-white">Perfect Pizza</a>
+                © 2020 Copyright:
+                <a class="text-white">Perfect Pizza</a>
             </div>
             <!-- Copyright -->
-          </footer>
-        
-        
-        <!-- MDB -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        </footer>
+    </section>
 
-        <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script> -->
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    </body>
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script> -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</body>
+
 </html>
