@@ -147,14 +147,15 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('pizzaCartWithAPIWidget', function () {
       return {
         scount: 0, mcount: 0, money:0, total:0, lcount: 0, message: '', amount: 0, show: false, open: false,
-        message: 'welcome',
-        username: 'Big_T',
+        username: 'tswelopele',
         pizzas: [],
         featuredpizzas: [],
+        userCartContent: '',
+        openHistory: false,
         cart_count: 0,
         change: 0,
         cart_id: '',
-        cart: { total: 0 , quantity: 0},
+        cart: { total: 0},
         paymentMessage: '',
         payNow: false,
         paymentAmount: 0,
@@ -165,10 +166,11 @@ document.addEventListener('alpine:init', () => {
             .get(this.base_url+'api/pizzas')
             .then((result) => {
               this.pizzas = result.data.pizzas
-              console.log(this.pizzas)
+              console.log(result.data)
             })
             .then(() => {
-                console.log("cart created")
+              this.userCart();
+              console.log("cart created")
               return this.createCart();
             })
             .then((result) => {
@@ -176,7 +178,6 @@ document.addEventListener('alpine:init', () => {
               console.log(this.cart_id)
             });
         },
-  
   
         featuredPizzas() {
           return axios
@@ -189,7 +190,7 @@ document.addEventListener('alpine:init', () => {
         },
   
         createCart() {
-            this.message = this.username + "added a pizza"
+            
           return axios
             .get(this.base_url + 'api/pizza-cart/create?username=' + this.username)
         },
@@ -207,6 +208,23 @@ document.addEventListener('alpine:init', () => {
               
             });
         },
+        userCart() {
+          let config = {
+              method: 'get',
+              maxBodyLength: Infinity,
+              url: `https://pizza-api.projectcodex.net/api/pizza-cart/username/${this.username}`,
+              headers: {}
+          };
+
+          axios.request(config)
+              .then((response) => {
+                  this.userCartContent = response.data;
+                  console.log(JSON.stringify(response.data));
+              })
+              .catch((error) => {
+                  console.log(error);
+              });
+      },
   
   
         add(pizza) {
@@ -214,7 +232,7 @@ document.addEventListener('alpine:init', () => {
           axios
             .post(this.base_url + 'api/pizza-cart/add', {
                 cart_code: this.cart_id,
-                pizza_id: pizza.id
+                pizza_id: pizza
               })
             .then(() => {
                 this.cart_count++;
@@ -238,7 +256,7 @@ document.addEventListener('alpine:init', () => {
           axios
             .post(this.base_url + 'api/pizza-cart/remove', {
                 cart_code: this.cart_id,
-                pizza_id: pizza.id
+                pizza_id: pizza
               })
             .then(() => {
                 this.cart_count--;
@@ -266,13 +284,14 @@ document.addEventListener('alpine:init', () => {
                   this.lcount = 0;
                   this.cart_count=0;
                   this.paymentMessage = '';
-                }, 3000);
+                  window.location.reload()
+                }, 5000);
   
               } else if (this.paymentAmount < this.money) {
                 this.paymentMessage = 'Sorry, That is not enough money!'
                 setTimeout(() => {
                     this.paymentMessage = ''
-                  }, 3000);
+                  }, 5000);
               }
   
             })

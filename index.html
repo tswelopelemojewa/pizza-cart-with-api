@@ -20,6 +20,7 @@
 </head>
 
 <body x-data="pizzaCartWithAPIWidget">
+
     <section class="main">
         <!-- Navbar -->
         <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
@@ -53,8 +54,7 @@
                     <a class="link-secondary me-3" href="#">
                         <i class="fas fa-shopping-cart" @click="(open=!open)"></i>
 
-                        <span class="badge rounded-pill badge-notification bg-danger"
-                            x-text="cart_count"></span>
+                        <span class="badge rounded-pill badge-notification bg-danger" x-text="cart_count"></span>
                     </a>
 
                 </div>
@@ -76,7 +76,7 @@
                         <h6 x-text="paymentMessage"></h6>
                         <span>Here is you change: </span><span x-text="change.toFixed(2)"></span>
                     </div>
-                    
+
                 </template>
 
                 <template x-if="paymentMessage== 'Sorry, That is not enough money!'">
@@ -87,19 +87,45 @@
         </main>
 
         <div class="container text-center">
+            <div>
+                <!-- <form> -->
+                <label>Username: </label>
+                <input type="text" class="form-control-sm" x-model="name" placeholder="Enter Username..." />
+                <button class="btn btn-success" @click="(username=name)">Enter</button>
+                <button class="btn btn-info" @click="openHistory=!openHistory"> <span x-text="username"></span>'s historical Carts</button>
+                
+                <!-- </form> -->
+
+                <div x-show="openHistory">
+                    <h3>History Carts</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Cart ID</th>
+                                <th>Cart Code</th>
+                                <th>User</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        <template x-for="cart in userCartContent">
+                        <tr class="text-center">
+                            <td x-text="cart.id"></td>
+                            <td x-text="cart.cart_code"></td>
+                            <td x-text="cart.username"></td>
+                        </tr>
+                    </template>
+                    </tbody>
+                    
+                </table>
+                </div>
+
+            </div><br>
+
             <div x-show="open && money>0" class="header-div">
                 <h3 class="fas fa-cart-shopping ">Shopping Cart</h3>
-                <h3 class="fas fa-cart-shopping"></h3>
-
-                <div>
-                    <span>Cart ID: </span>
-                    <span x-text="cart_id"></span>
-    
-                    <form>
-                        <label>Username </label>
-                        <input type="text" class="form-control-sm" x-model="username" placeholder="Enter Username..." />
-                    </form>
-                </div><br>
+                <h3 class="fas fa-cart-shopping"></h3><br>
+                <span>Active Cart ID: </span>
+                <span x-text="cart_id"></span><br>
 
                 <table class="table">
                     <thead class="header-div">
@@ -111,41 +137,47 @@
                             <th>Quantity</th>
                             <th>Action</th>
                         </tr>
-    
+
                     </thead>
                     <tbody class="header-div">
-                         <tr x-show="scount > 0">
+                        <tr x-show="scount > 0">
                             <td>Creamy Tikka Veg</td>
-                            <td >pepperoni Pizza</td>
-                            <td >small</td>
-                            <td >35.00</td>
+                            <td>pepperoni Pizza</td>
+                            <td>small</td>
+                            <td>35.00</td>
                             <td x-text="scount"></td>
-                            <td><button class="badge badge-info"  @click="(cart_count++), (scount++), (total+=35)">+</button>
-                                <button class="badge badge-danger"  x-on:click="if(scount > 0){(cart_count--), (scount--), (total-=35)}">-</button>
+                            <td><button class="badge badge-info"
+                                    @click="(cart_count++), (scount++), (total+=35)">+</button>
+                                <button class="badge badge-danger"
+                                    x-on:click="if(scount > 0){(cart_count--), (scount--), (total-=35)}">-</button>
                             </td>
-                                
+
                         </tr>
                         <tr x-show="mcount > 0">
                             <td>margeritha pizza</td>
-                            <td >Meaty</td>
-                            <td >Medium</td>
-                            <td >55.00</td>
+                            <td>Meaty</td>
+                            <td>Medium</td>
+                            <td>55.00</td>
                             <td x-text="mcount"></td>
-                            <td><button class="badge badge-info"  @click="(cart_count++), (mcount++), (total+=55)">+</button>
-                                <button class="badge badge-danger"  x-on:click="if(mcount > 0){(cart_count--), (mcount--), (total-=55)}">-</button>
+                            <td><button class="badge badge-info"
+                                    @click="(cart_count++), (mcount++), (total+=55)">+</button>
+                                <button class="badge badge-danger"
+                                    x-on:click="if(mcount > 0){(cart_count--), (mcount--), (total-=55)}">-</button>
                             </td>
-                                
+
                         </tr>
                         <tr x-show="lcount > 0">
                             <td>cheese pizza</td>
-                            <td >Cheese</td>
-                            <td >Large</td>
-                            <td >95.00</td>
+                            <td>Cheese</td>
+                            <td>Large</td>
+                            <td>95.00</td>
                             <td x-text="lcount"></td>
-                            <td><button class="badge badge-info"  @click="(cart_count++), (lcount++), (total+=95)">+</button>
-                                <button class="badge badge-danger"  x-on:click="if(lcount > 0){(cart_count--), (lcount--), (total-=95)}">-</button>
+                            <td><button class="badge badge-info"
+                                    @click="(cart_count++), (lcount++), (total+=95)">+</button>
+                                <button class="badge badge-danger"
+                                    x-on:click="if(lcount > 0){(cart_count--), (lcount--), (total-=95)}">-</button>
                             </td>
-                                
+
                         </tr>
 
                         <template x-for="pizza in cart.pizzas">
@@ -155,8 +187,9 @@
                                 <td x-text="pizza.size"></td>
                                 <td x-text="pizza.price"></td>
                                 <td x-text="pizza.qty"></td>
-                                <td><button class="badge badge-info" @click="add(pizza)">+</button>
-                                    <button class="badge badge-danger" @click="remove(pizza)">-</button></td>
+                                <td><button class="badge badge-info" @click="add(pizza.id)">+</button>
+                                    <button class="badge badge-danger" @click="remove(pizza.id)">-</button>
+                                </td>
                             </tr>
                         </template>
                         <tr>
@@ -166,27 +199,29 @@
                             <td><span x-text="money = total + cart.total"></span></td>
                             <td><span x-text="cart_count"></span> pizza<span x-show="cart_count > 1">s</span></td>
                             <td>
-                                <button class="btn btn-warning" x-show="!payNow" x-on:click="payNow=true">Checkout</button>
+                                <button class="btn btn-warning" x-show="!payNow"
+                                    x-on:click="payNow=true">Checkout</button>
                             </td>
                         </tr>
                         <tr x-show="payNow">
                             <td colspan="6">
                                 <div class="">
                                     <div>
-                                        <label >Enter Amount</label>
-                                        <input class="form-control" type="number" placeholder="Enter Amount" x-model="paymentAmount" /><br>
-                                        <button  x-on:click="pay" class="btn btn-success btn-block">Pay</button>
+                                        <label>Enter Amount</label>
+                                        <input class="form-control" type="number" placeholder="Enter Amount"
+                                            x-model="paymentAmount" /><br>
+                                        <button x-on:click="pay" class="btn btn-success btn-block">Pay</button>
                                     </div>
                                 </div>
 
                             </td>
                         </tr>
                     </tbody>
-                    
+
                 </table>
             </div>
 
-            
+
 
             <section class="row text-center">
                 <section class="col-md-4">
@@ -199,8 +234,9 @@
                             </a>
                         </div>
                         <div class="card-body sec-1">
-                            <h2 class="card-title">Small Pizza</h2>
-                            <h3>R35.00</h3>
+                            <h2 class="card-title">Pepperoni Pizza</h2>
+                            <span><b>R35.00</b></span> <span class="badge rounded-pill badge-info">Small Pizza</span>
+
                             <p class="card-text">Small pizza with 2 toppings
                                 1 meat topping.
                                 3 or less other toppings.</p>
@@ -230,19 +266,21 @@
                             </a>
                         </div>
                         <div class="card-body sec-2">
-                            <h2 class="card-title">Medium Pizza</h2>
-                            <h3>R55.00</h3>
+                            <h2 class="card-title">Margeritha Pizza</h2>
+                            <span><b>R55.00 </b></span> <span class="badge rounded-pill badge-info">Medium Pizza</span>
+
                             <p class="card-text">Medium margeritha pizza with 3 topping max 2 or less meat topping 3 or
                                 less other toppings</p>
 
                             <div class="d-grid gap-2">
-                                <a class="btn btn-primary" @click="(cart_count++),(total+=55) (mcount++)" x-show="mcount < 1">Add to
+                                <a class="btn btn-primary" @click="(cart_count++),(total+=55),(mcount++)"
+                                    x-show="mcount < 1">Add to
                                     cart</a>
 
                                 <div x-show="mcount > 0">
                                     <a href="#!" class="btn btn-success" @click="open=!open" x-show="mcount > 0">View
                                         Cart</a>
-                                    <a href="#!" class="btn btn-warning" @click="(total.toFixed(2)-=55),(mcount--), (cart_count--)"
+                                    <a href="#!" class="btn btn-warning" @click="(total-=55),(mcount--), (cart_count--)"
                                         x-show="mcount > 0">Cancel Order</a>
                                 </div>
                             </div>
@@ -260,15 +298,16 @@
                             </a>
                         </div>
                         <div class="card-body sec-3">
-                            <h2 class="card-title">Large Pizza</h2>
-                            <h3>R95.00</h3>
+                            <h2 class="card-title">Cheese Pizza</h2>
+                            <span><b>R95.00 </b></span> <span class="badge rounded-pill badge-info">large Pizza</span>
                             <p class="card-text">
-                                Large cheese pizza with 3 toppings max
+                                cheese pizza with 3 toppings max
                                 3 meat topping max
                                 3 or less other toppings</p><br>
 
                             <div class="d-grid gap-2">
-                                <a class="btn btn-primary" @click="(total+=95),(lcount++),(cart_count++)" x-show="lcount < 1">Add to
+                                <a class="btn btn-primary" @click="(total+=95),(lcount++),(cart_count++)"
+                                    x-show="lcount < 1">Add to
                                     cart</a>
                                 <div x-show="lcount > 0">
                                     <a href="#!" class="btn btn-success" @click="open=!open" x-show="lcount > 0">View
@@ -287,6 +326,7 @@
                 <thead class="header-div">
                     <tr>
                         <th>Flavour</th>
+                        <!-- <th>Featured</th> -->
                         <th>Type</th>
                         <th>Size</th>
                         <th>Price</th>
@@ -298,13 +338,14 @@
                     <template x-for="pizza in pizzas">
                         <tr>
                             <td x-text="pizza.flavour"></td>
+                            <!-- <td x-text="pizza.featured"></td> -->
                             <td x-text="pizza.type"></td>
                             <td x-text="pizza.size"></td>
                             <td x-text="pizza.price"></td>
                             <td>
                                 <div class="">
-                                    <a class="btn btn-primary" @click="(add(pizza)), (cart.price+=pizza.price)">Add to
-                                        cart</a>    
+                                    <a class="btn btn-primary" @click="(add(pizza.id)), (cart.price+=pizza.price)">Add to
+                                        cart</a>
                                 </div>
                             </td>
                         </tr>
