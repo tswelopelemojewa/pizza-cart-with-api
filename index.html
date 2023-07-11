@@ -19,8 +19,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet" />
 </head>
 
-<body x-data="pizzaCartWithAPIWidget">
-
+<body x-data="pizzaCartWithAPIWidget" x-cloak>
+    <!-- <div onload="myFunction()"> -->
     <section class="main">
         <!-- Navbar -->
         <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
@@ -70,33 +70,31 @@
                 <h1>PERFECT PIZZA</h1>
                 <hr />
             </div>
-            <div class="text-center">
-                <template x-if="paymentMessage=='Enjoy your pizza'">
-                    <div class="alert alert-success">
-                        <h6 x-text="paymentMessage"></h6>
-                        <span>Here is you change: </span><span x-text="change.toFixed(2)"></span>
-                    </div>
 
-                </template>
-
-                <template x-if="paymentMessage== 'Sorry, That is not enough money!'">
-                    <h6 class="alert alert-danger" x-text="paymentMessage"></h6>
-                </template>
-            </div>
-
+                
         </main>
 
-        <div class="container text-center">
-            <div>
+        <div class="container text-center" x-cloak>
+            <div x-cloak>
                 <!-- <form> -->
-                <label>Username: </label>
-                <input type="text" class="form-control-sm" x-model="name" placeholder="Enter Username..." />
-                <button class="btn btn-success" @click="(username=name)">Enter</button>
-                <button class="btn btn-info" @click="openHistory=!openHistory"> <span x-text="username"></span>'s historical Carts</button>
+                <!-- <label>Username: </label> -->
+                <!-- <input type="text" class="form-control-sm" x-model="name" placeholder="Enter Username..." /> -->
+                <!-- <button class="btn btn-success" @click="(enterUsername), (username=name)" x-show="cart_id">Enter</button> -->
+                <button class="btn btn-danger" x-on:click="logout" x-show="username && cart_id">Clear All</button>
+
                 
+                
+                <button class="btn btn-info" @click="(openHistory=!openHistory)" x-show="username && cart_id">
+                    historical Carts</button><br>
+                    <span x-show="username && cart_id">Active Cart ID: </span>
+                    <span x-text="cart_id" x-cloak></span><br>
+
+                    <span x-show="username && cart_id" x-text="text" x-cloak></span>
+                    <button class="btn btn-primary btn-block" x-on:click="(loadData())" x-show="!username && !cart_id">Create Cart</button>
+                    <!-- <span>Username: </span><span x-text="text"></span> -->
                 <!-- </form> -->
 
-                <div x-show="openHistory">
+                <div x-show="openHistory && username && cart_id" x-cloak>
                     <h3>History Carts</h3>
                     <table class="table">
                         <thead>
@@ -106,26 +104,26 @@
                                 <th>User</th>
                             </tr>
                         </thead>
-                    <tbody>
-                        <template x-for="cart in userCartContent">
-                        <tr class="text-center">
-                            <td x-text="cart.id"></td>
-                            <td x-text="cart.cart_code"></td>
-                            <td x-text="cart.username"></td>
-                        </tr>
-                    </template>
-                    </tbody>
-                    
-                </table>
+                        <tbody>
+                            <template x-for="cart in userCartContent">
+                                <tr class="text-center">
+                                    <td x-text="cart.id"></td>
+                                    <td x-text="cart.cart_code"></td>
+                                    <td x-text="cart.username"></td>
+                                </tr>
+                            </template>
+                        </tbody>
+
+                    </table>
                 </div>
 
             </div><br>
 
-            <div x-show="open && money>0" class="header-div">
+            <div x-show="open && money>0" class="header-div" x-cloak>
                 <h3 class="fas fa-cart-shopping ">Shopping Cart</h3>
                 <h3 class="fas fa-cart-shopping"></h3><br>
                 <span>Active Cart ID: </span>
-                <span x-text="cart_id"></span><br>
+                <span x-text="cart_id" x-cloak></span><br>
 
                 <table class="table">
                     <thead class="header-div">
@@ -180,7 +178,7 @@
 
                         </tr>
 
-                        <template x-for="pizza in cart.pizzas">
+                        <template x-for="pizza in cart.pizzas" x-cloak>
                             <tr>
                                 <td x-text="pizza.flavour"></td>
                                 <td x-text="pizza.type"></td>
@@ -192,6 +190,7 @@
                                 </td>
                             </tr>
                         </template>
+
                         <tr>
                             <td></td>
                             <td></td>
@@ -203,6 +202,20 @@
                                     x-on:click="payNow=true">Checkout</button>
                             </td>
                         </tr>
+                        <div class="text-center">
+                            <td colspan="7">
+                                <template x-if="paymentMessage=='Enjoy your pizza'">
+                                    <div class="alert alert-success">
+                                        <h6 x-text="paymentMessage"></h6>
+                                        <span>Here is you change: </span><span x-text="change.toFixed(2)"></span>
+                                    </div>
+                                </template>
+
+                                <template x-if="paymentMessage== 'Sorry, That is not enough money!'">
+                                    <h6 class="alert alert-danger" x-text="paymentMessage"></h6>
+                                </template>
+                            </td>
+                        </div>
                         <tr x-show="payNow">
                             <td colspan="6">
                                 <div class="">
@@ -241,9 +254,9 @@
                                 1 meat topping.
                                 3 or less other toppings.</p>
                             <br>
-                            <div class="d-grid gap-2">
+                            <div class="d-grid gap-2" x-show="username">
                                 <a href="#!" class="btn btn-primary" @click="(cart_count++),(scount++), (total+=35)"
-                                    x-show="scount < 1">Add to cart</a>
+                                    x-show="scount < 1 && username">Add to cart</a>
                                 <div x-show="scount > 0">
                                     <a href="#!" class="btn btn-success" @click="open=!open" x-show="scount > 0">View
                                         Cart</a>
@@ -272,9 +285,9 @@
                             <p class="card-text">Medium margeritha pizza with 3 topping max 2 or less meat topping 3 or
                                 less other toppings</p>
 
-                            <div class="d-grid gap-2">
+                            <div class="d-grid gap-2" x-show="username">
                                 <a class="btn btn-primary" @click="(cart_count++),(total+=55),(mcount++)"
-                                    x-show="mcount < 1">Add to
+                                    x-show="mcount < 1 && username">Add to
                                     cart</a>
 
                                 <div x-show="mcount > 0">
@@ -305,9 +318,9 @@
                                 3 meat topping max
                                 3 or less other toppings</p><br>
 
-                            <div class="d-grid gap-2">
+                            <div class="d-grid gap-2" x-show="username">
                                 <a class="btn btn-primary" @click="(total+=95),(lcount++),(cart_count++)"
-                                    x-show="lcount < 1">Add to
+                                    x-show="lcount < 1 && username">Add to
                                     cart</a>
                                 <div x-show="lcount > 0">
                                     <a href="#!" class="btn btn-success" @click="open=!open" x-show="lcount > 0">View
@@ -334,7 +347,7 @@
                     </tr>
 
                 </thead>
-                <tbody class="header-div">
+                <tbody class="header-div" x-show="username && cart_id" x-cloak>
                     <template x-for="pizza in pizzas">
                         <tr>
                             <td x-text="pizza.flavour"></td>
@@ -344,7 +357,8 @@
                             <td x-text="pizza.price"></td>
                             <td>
                                 <div class="">
-                                    <a class="btn btn-primary" @click="(add(pizza.id)), (cart.price+=pizza.price)">Add to
+                                    <a class="btn btn-primary" @click="(add(pizza.id)), (cart.price+=pizza.price)">Add
+                                        to
                                         cart</a>
                                 </div>
                             </td>
@@ -352,8 +366,11 @@
 
                     </template>
                 </tbody>
+               
             </table>
-
+                <div x-show="!username">
+                    <p>click <a x-on:click="myFunction()">create cart</a> to view all the pizzas available</p>
+                </div>
 
         </div>
 
@@ -423,7 +440,7 @@
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script> -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+<!-- </div> -->
 </body>
 
 </html>

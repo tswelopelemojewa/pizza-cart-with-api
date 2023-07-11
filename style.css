@@ -37,3 +37,5 @@ body{
     background-image: linear-gradient(to right, rgba(190,0,0,0.7), rgba(255,0,0,1))
 }
 /* end of section styling */
+
+[x-cloak] { display: none !important; }
