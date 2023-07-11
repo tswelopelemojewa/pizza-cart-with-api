@@ -44,7 +44,7 @@ document.addEventListener('alpine:init', () => {
         this.username = prompt("Please enter Username:", "");
         if (this.username == null || this.username.length < 2) {
           this.text = "Enter proper name";
-          window.location.reload()
+          // window.location.reload()
 
         } else {
           this.text = `Welcome ${this.username}`;
@@ -54,7 +54,8 @@ document.addEventListener('alpine:init', () => {
       createCart() {
 
         if (!this.username) {
-          this.cart_id = "Enter Username to create a cart";
+          // this.cart_id = "Enter Username to create a cart";
+          
           return;
         }
 
