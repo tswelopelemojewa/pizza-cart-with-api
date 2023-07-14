@@ -10,6 +10,19 @@ body{
     background-color: rgba(255, 255, 255, 0.8);
 }
 
+.main2{
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.header-div2{
+    text-align: center;
+    margin: 10px;
+    padding: 15px;
+    /* font-size: 35px; */
+    font-family: cursive, 'Brush Script MT';
+    background-color: rgba(0,0,0,0.4);
+    /* color: white; */
+}
 .header-div{
     text-align: center;
     margin: 10px;
@@ -39,3 +52,6 @@ body{
 /* end of section styling */
 
 [x-cloak] { display: none !important; }
+
+
+
