@@ -212,7 +212,7 @@ document.addEventListener('alpine:init', () => {
           .catch(err => alert(err));
 
       },
-      pay(pizza) {
+      pay() {
 
         axios
           .post(this.base_url + 'api/pizza-cart/pay', {
@@ -238,8 +238,8 @@ document.addEventListener('alpine:init', () => {
                 window.location.reload()
               }, 5000);
 
-            } else if (this.paymentAmount < this.cart.total) {
-              this.paymentMessage = 'Sorry, That is not enough cart.total!'
+            } else{
+              this.paymentMessage = 'Sorry, That is not enough money!'
               setTimeout(() => {
                 this.paymentMessage = ''
               }, 5000);
