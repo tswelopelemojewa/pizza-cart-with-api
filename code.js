@@ -34,7 +34,7 @@ document.addEventListener('alpine:init', () => {
         }
       },
       logout() {
-        // confirm("Are you sure you wanna Sign out..?");
+
 
         if (confirm("Are you sure you wanna Sign out..?") == true) {
           this.cart_id = '';
@@ -233,7 +233,7 @@ document.addEventListener('alpine:init', () => {
                 this.cart_id = '';
                 // localStorage['username'] = localStorage['username'];
                 localStorage['cart_id'] = '';
-                this.userCartContent = [],
+                this.userCartContent = [];
                   this.createCart();
                 window.location.reload()
               }, 5000);
