@@ -6,6 +6,12 @@ document.addEventListener('alpine:init', () => {
               pizzas: [],
               userCartContent: '',
               openUserHistory: false,
+              viewPizzas: false,
+              viewBtn: false,
+              cart_part2: '',
+              part1: '',
+              
+
 
           init() {
             axios
@@ -18,6 +24,10 @@ document.addEventListener('alpine:init', () => {
               })
   
           },
+          showPizzas(x){
+              this.viewPizzas=true;
+            
+          },
   
           UserHistory(){
             axios.get(`https://pizza-api.projectcodex.net/api/pizza-cart/username/${this.username}`)
@@ -26,8 +36,37 @@ document.addEventListener('alpine:init', () => {
               console.log(this.userCartContent)
             })
           },
-  
+
+          showCart2(historyCart) {
+
+            const url = `https://pizza-api.projectcodex.net/api/pizza-cart/${historyCart}/get`;
+    
+            axios
+              .get(url)
+              .then((result)=>{
+                this.cart_part2 = result.data.pizzas; 
+                console.log(this.cart_part2)
+              })
+            
+          },
+
+          logout() {
+            if (confirm("Are you sure you wanna Sign out..?") == true) {
+              this.cart_id = '';
+              this.username = '';
+              this.name = '';
+              localStorage['username'] = '';
+              this.cart_count = 0;
+              this.userCartContent = [];
+              
+            } else {
+              this.cart_id = localStorage['cart_id'];
+              this.username = localStorage['username'];
+            }
+        
+          }
         }
+        
   
   
       })

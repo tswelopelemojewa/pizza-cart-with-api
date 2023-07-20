@@ -47,7 +47,7 @@ post https://pizza-api.projectcodex.net/api/pizzas/api/pizza-cart/remove
 
 
 # view cart content
-GET https://pizza-api.projectcodex.net/api/pizza-cart/:cart_code/get
+GET https://pizza-api.projectcodex.net/api/pizza-cart/:gCJl67a6rR/get
 
 
 # make payments

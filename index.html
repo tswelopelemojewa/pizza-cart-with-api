@@ -24,7 +24,6 @@
 </head>
 
 <body x-data="pizzaCartWithAPIWidget" x-cloak>
-    <!-- <div onload="myFunction()"> -->
     <section class="main">
 
         <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-black">
@@ -39,11 +38,9 @@
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="link-secondary me-3" href="historicalcarts.html" x-show="username && cart_id">Historical carts</a>
+                            <a class="link-secondary me-3" href="historicalcarts.html"
+                                x-show="username && cart_id">Historical carts</a>
                         </li>
-                        <!-- <li class="nav-item">
-                    <a class="link-secondary me-3" x-show="localStorage['username'] && localStorage['cart_id']" x-text="localStorage['cart_id']" x-cloak></a>
-                  </li> -->
 
                     </ul>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -51,7 +48,6 @@
                             <a class="link-secondary me-3 position-relative" href="#" x-show="username && cart_id">
                                 <i class="fas fa-shopping-cart " @click="(open=!open)"></i>
 
-                                <!-- <span class="badge rounded-pill badge-notification bg-danger" x-text="cart_count"></span> -->
                                 <span
                                     class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border rounded-circle"
                                     x-show="cart.total.toFixed(2) > 0">
@@ -63,8 +59,8 @@
                             <a x-text="username" class="link-secondary me-3"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="link-secondary me-3" x-on:click="logout"
-                                x-show="username && cart_id">Sign out</a>
+                            <a class="link-secondary me-3 btn" x-on:click="logout" x-show="username && cart_id">Sign
+                                out</a>
                         </li>
                     </ul>
 
@@ -79,29 +75,28 @@
                 <h1>PERFECT PIZZA</h1>
                 <hr />
             </div>
-
-
         </main>
 
         <div class="container text-center" x-cloak>
-            <div x-cloak>
+            <div x-cloak class="col-md-8 text-center m-auto" x-cloak>
 
-                <label x-show="!username">Username: </label>
-                <input type="text" class="form-control-sm" x-model="name" placeholder="Enter Username..."
-                    x-show="!username" />
-                <button class="btn btn-success" @click="(enterUsername), (username=name), (hideLogin=!hideLogin)"
-                    x-show="!username">Sign IN</button>
+                <label x-show="!username">USERNAME </label>
+                <input type="text" class="form-control" x-model="name" placeholder="Enter Username..."
+                    x-show="!username" /> <br>
+                <button class="btn btn-success btn-block"
+                    @click="(enterUsername), (username=name), (hideLogin=!hideLogin)" x-show="!username">Sign
+                    IN</button>
 
-
-            </div><br>
+            </div>
 
             <div x-show="username && open && cart.total.toFixed(2) > 0" class="header-div" x-cloak>
+
                 <h3 class="fas fa-cart-shopping ">Shopping Cart</h3>
                 <h3 class="fas fa-cart-shopping"></h3><br>
                 <span>Active Cart ID: </span>
                 <span x-text="cart_id" x-cloak></span><br>
 
-                <div class="container">
+                <div class="container" x-cloak>
                     <table class="table table-responsive">
                         <thead class="header-div">
                             <tr>
@@ -110,6 +105,7 @@
                                 <th>Size</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
+                                <th>Total</th>
                                 <th>Action</th>
                             </tr>
 
@@ -123,6 +119,7 @@
                                     <td x-text="pizza.size"></td>
                                     <td x-text="pizza.price"></td>
                                     <td x-text="pizza.qty"></td>
+                                    <td x-text="pizza.total.toFixed(2)"></td>
                                     <td><button class="badge badge-info" @click="add(pizza.id)">+</button>
                                         <button class="badge badge-danger" @click="remove(pizza.id)">-</button>
                                     </td>
@@ -130,7 +127,7 @@
                             </template>
 
                             <tr>
-                                <td colspan="3">Total</td>
+                                <td colspan="5">Total</td>
                                 <td><span x-text="cart.total.toFixed(2)"></span></td>
 
                                 <td colspan="2">
@@ -140,7 +137,7 @@
                             </tr>
 
                             <tr x-show="payNow">
-                                <td colspan="6">
+                                <td colspan="7">
 
                                     <template x-if="paymentMessage=='Enjoy your pizza'">
                                         <div class="alert alert-success">
@@ -156,7 +153,7 @@
                                         <label>Enter Amount</label>
                                         <input class="form-control" type="number" placeholder="Enter Amount"
                                             x-model="paymentAmount" /><br>
-                                        <button x-on:click="pay" class="btn btn-success btn-block">Pay</button>
+                                        <button x-on:click="payForCart()" class="btn btn-success btn-block">Pay</button>
                                     </div>
 
                                 </td>
@@ -169,8 +166,8 @@
             </div>
 
 
-            <div class="row" x-show="username">
-                <template x-for="pizza in displayfeaturedpizzas.pizzas">
+            <div class="row" x-show="username" x-cloak>
+                <template x-for="pizza in displayfeaturedpizzas.pizzas" x-cloak>
 
                     <section class="col-md-4">
 
@@ -186,6 +183,7 @@
                                     <img src="images/th-2407141163" class="img-fluid" />
                                 </template>
 
+
                                 <a href="#!">
                                     <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                                 </a>
@@ -200,14 +198,16 @@
                                     <a href="#!" class="btn btn-primary"
                                         @click="(add(pizza.id)), ((cart.total += pizza.price).toFixed(2))"
                                         x-show="username">Add to cart</a>
-                                    <!-- <div x-show="scount > 0">
-                                        <button class="btn btn-info" x-on:click="(open=!open), (hideCart=!hideCart)" x-show="hideCart">Hide cart</button>
-                                        <a href="#!" class="btn btn-success" @click="(open=!open), (hideCart=!hideCart)" x-show="scount > 0 && !hideCart">View
+
+                                    <div x-show="username && cart.total.toFixed(2) > 0">
+                                        <button class="btn btn-info btn-block"
+                                            x-on:click="(open=!open), (hideCart=!hideCart)" x-show="hideCart">Hide
+                                            cart</button>
+                                        <a href="#!" class="btn btn-success btn-block"
+                                            @click="(open=!open), (hideCart=!hideCart)" x-show="!hideCart">View
                                             Cart</a>
-    
-                                        <a href="#!" class="btn btn-warning" @click="(total-=35),(scount--),(cart_count--) "
-                                            x-show="scount > 0">Cancel Order</a>
-                                    </div> -->
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -221,54 +221,55 @@
             <div class="alert alert-info" x-show="username && cart_id && featureLength < 3" x-cloak>Add Featured Pizzas
             </div>
 
-            <table class="table" x-show="username && cart_id" x-cloak>
-                <thead class="header-div">
-                    <tr>
-                        <th>Flavour</th>
-                        <th x-show="featureLength < 3">Featured</th>
-                        <th>Type</th>
-                        <th>Size</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-
-                </thead>
-                <tbody class="header-div">
-                    <template x-for="pizza in pizzas">
+            <div class="container" x-cloak>
+                <table class="table" x-show="username && cart_id" x-cloak>
+                    <thead class="header-div">
                         <tr>
-                            <td x-text="pizza.flavour"></td>
-                            <td x-show="featureLength < 3">
-                                <button @click="postfeaturedPizzas(pizza.id)"
-                                    class="badge badge-info rounded-pill">Feature</button>
-                            </td>
-                            <td x-text="pizza.type"></td>
-                            <td x-text="pizza.size"></td>
-                            <td x-text="pizza.price"></td>
-                            <td>
-                                <div class="">
-                                    <a class="btn btn-primary"
-                                        @click="(add(pizza.id)), ((cart.total += pizza.price).toFixed(2))">Add
-                                        to
-                                        cart</a>
-
-                                    <div x-show="lcount > 0">
-                                        <button class="btn btn-info" x-on:click="(open=!open), (hideCart=!hideCart)"
-                                            x-show="hideCart">Hide cart</button>
-                                        <a href="#!" class="btn btn-success" @click="(open=!open), (hideCart=!hideCart)"
-                                            x-show="lcount > 0 && !hideCart">View
-                                            Cart</a>
-                                        <a href="#!" class="btn btn-warning"
-                                            @click="(total+=95),(lcount--),(cart_count--)" x-show="lcount > 0">Cancel
-                                            Order</a>
-                                    </div>
-                                </div>
-                            </td>
+                            <th>Flavour</th>
+                            <th x-show="featureLength < 3">Featured</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Action</th>
                         </tr>
 
-                    </template>
-                </tbody>
+                    </thead>
+                    <tbody class="header-div">
+                        <template x-for="pizza in pizzas">
+                            <tr>
+                                <td x-text="pizza.flavour"></td>
+                                <td x-show="featureLength < 3">
+                                    <button @click="postfeaturedPizzas(pizza.id)"
+                                        class="badge badge-info rounded-pill">Feature</button>
+                                </td>
+                                <td x-text="pizza.type"></td>
+                                <td x-text="pizza.size"></td>
+                                <td x-text="pizza.price"></td>
+                                <td>
+                                    <div class="">
+                                        <a class="btn btn-primary btn-sm"
+                                            @click="(add(pizza.id)), ((cart.total += pizza.price).toFixed(2))">Add
+                                            to
+                                            cart</a>
 
-            </table>
+                                        <button class="btn btn-info btn-sm"
+                                            x-on:click="(open=!open), (hideCart=!hideCart)"
+                                            x-show="hideCart && username && cart.total.toFixed(2) > 0">Hide
+                                            cart</button>
+                                        <a href="#!" class="btn btn-success btn-sm"
+                                            @click="(open=!open), (hideCart=!hideCart)"
+                                            x-show="!hideCart && username && cart.total.toFixed(2) > 0">View
+                                            Cart</a>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </template>
+                    </tbody>
+
+                </table>
+            </div>
 
         </div>
 
