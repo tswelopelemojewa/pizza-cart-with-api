@@ -65,7 +65,7 @@
           <hr>
         </div>
 
-        <div class="container">
+        <div class="container" x-show="localStorage['username'] && localStorage['cart_id']">
 
           <table class="table table-responsive" x-show="viewPizzas">
             <thead class="header-div2">
@@ -100,8 +100,8 @@
           <br>
 
          
-          <table class="table table-hover" x-cloak>
-            <thead class="header-div2">
+          <table class="table table-hover" x-show="localStorage['username'] && localStorage['cart_id']" x-cloak>
+            <thead class="header-div2" x-show="localStorage['username'] && localStorage['cart_id']">
               <tr>
                 <th>CART CODE</th>
                 <th>STATUS</th>
@@ -133,6 +133,9 @@
       <br>
 
     </div>
+    <br><br>
+    <br>
+    <br>
 
     <footer class="bg-dark text-center text-white" x-cloak>
       <!-- Grid container -->
@@ -192,7 +195,7 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <script src="history.js"></script>
-  <script src="code.js" defer></script>
+  <!-- <script src="code.js" defer></script> -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </body>
 

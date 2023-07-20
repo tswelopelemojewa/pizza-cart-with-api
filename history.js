@@ -58,6 +58,7 @@ document.addEventListener('alpine:init', () => {
               localStorage['username'] = '';
               this.cart_count = 0;
               this.userCartContent = [];
+              window.location.reload();
               
             } else {
               this.cart_id = localStorage['cart_id'];
